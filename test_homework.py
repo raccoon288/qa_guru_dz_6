@@ -7,10 +7,10 @@ def test_dark_theme_by_time():
     """
     current_time = time(hour=23)
 
-    if time(hour=22) <= current_time <= time(hour=23) or time(hour=0) <= current_time <= time(hour=6):
-        is_dark_theme = True
-    else:
+    if 6 < current_time.hour < 22:
         is_dark_theme = False
+    else:
+        is_dark_theme = True
 
     assert is_dark_theme is True
 
@@ -26,15 +26,12 @@ def test_dark_theme_by_time_and_user_choice():
     current_time = time(hour=16)
     dark_theme_enabled_by_user = True
 
-    if dark_theme_enabled_by_user:
-        is_dark_theme = True
-    elif dark_theme_enabled_by_user == False:
+    if 6 < current_time.hour < 22 and dark_theme_enabled_by_user is None:
         is_dark_theme = False
-    elif dark_theme_enabled_by_user is None:
-        if time(hour=22) <= current_time <= time(hour=23) or time(hour=0) <= current_time <= time(hour=6):
-            is_dark_theme = True
-        else:
-            is_dark_theme = False
+    elif dark_theme_enabled_by_user is False:
+        is_dark_theme = False
+    else:
+        is_dark_theme = True
 
     assert is_dark_theme is True
 
@@ -54,7 +51,7 @@ def test_find_suitable_user():
     suitable_users = None
     for user in users:
         if user["name"] == "Olga" and user["age"] == 45:
-            suitable_users = {"name": user["name"], "age": user["age"]}
+            suitable_users = user
             break
     assert suitable_users == {"name": "Olga", "age": 45}
 
@@ -78,6 +75,12 @@ def test_find_suitable_user():
 # >>> open_browser(browser_name="Chrome")
 # "Open Browser [Chrome]"
 
+def transform_name_func(func, *args):
+    name_func = func.__name__
+    str_func = " ".join(name_func.split("_")).title()
+    str_args = f"[{', '.join(args)}]"
+    print(str_func, str_args)
+    return f"{str_func} {str_args}"
 
 def test_readable_function():
     print()
@@ -87,21 +90,15 @@ def test_readable_function():
 
 
 def open_browser(browser_name):
-    str_open_browser = open_browser.__name__
-    actual_result = " ".join(str_open_browser.split("_")).title() + f" [{browser_name}]"
-    print(actual_result)
+    actual_result = transform_name_func(open_browser,browser_name)
     assert actual_result == "Open Browser [Chrome]"
 
 
 def go_to_companyname_homepage(page_url):
-    str_go_to_companyname_homepage = go_to_companyname_homepage.__name__
-    actual_result = " ".join(str_go_to_companyname_homepage.split("_")).title() + f" [{page_url}]"
-    print(actual_result)
+    actual_result = transform_name_func(go_to_companyname_homepage,page_url)
     assert actual_result == "Go To Companyname Homepage [https://companyname.com]"
 
 
 def find_registration_button_on_login_page(page_url, button_text):
-    str_find_registration_button_on_login_page = find_registration_button_on_login_page.__name__
-    actual_result = " ".join(str_find_registration_button_on_login_page.split("_")).title() + f" [{page_url}, {button_text}]"
-    print(actual_result)
+    actual_result = transform_name_func(find_registration_button_on_login_page, page_url, button_text)
     assert actual_result == "Find Registration Button On Login Page [https://companyname.com/login, Register]"
