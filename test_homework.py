@@ -7,7 +7,7 @@ def test_dark_theme_by_time():
     """
     current_time = time(hour=23)
 
-    if 6 < current_time.hour < 22:
+    if 6 <= current_time.hour < 22:
         is_dark_theme = False
     else:
         is_dark_theme = True
@@ -26,7 +26,7 @@ def test_dark_theme_by_time_and_user_choice():
     current_time = time(hour=16)
     dark_theme_enabled_by_user = True
 
-    if 6 < current_time.hour < 22 and dark_theme_enabled_by_user is None:
+    if 6 <= current_time.hour < 22 and dark_theme_enabled_by_user is None:
         is_dark_theme = False
     elif dark_theme_enabled_by_user is False:
         is_dark_theme = False
@@ -82,6 +82,7 @@ def transform_name_func(func, *args):
     print(str_func, str_args)
     return f"{str_func} {str_args}"
 
+
 def test_readable_function():
     print()
     open_browser(browser_name="Chrome")
@@ -90,12 +91,12 @@ def test_readable_function():
 
 
 def open_browser(browser_name):
-    actual_result = transform_name_func(open_browser,browser_name)
+    actual_result = transform_name_func(open_browser, browser_name)
     assert actual_result == "Open Browser [Chrome]"
 
 
 def go_to_companyname_homepage(page_url):
-    actual_result = transform_name_func(go_to_companyname_homepage,page_url)
+    actual_result = transform_name_func(go_to_companyname_homepage, page_url)
     assert actual_result == "Go To Companyname Homepage [https://companyname.com]"
 
 
